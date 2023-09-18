@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -42,16 +43,31 @@ func minandmax(values []int) (int, int) {
 	return min, max
 }
 
-func main() {
-	result := ReadIntsByBlocks("puzzles/01.txt")
-	//result := ReadIntsByBlocks("puzzles/01_test.txt")
+func computeSums(filename string) []int {
+	result := ReadIntsByBlocks(filename)
 	sums := make([]int, len(result))
 	for i, nain := range result {
 		for _, calories := range nain {
 			sums[i] += calories
 		}
 	}
-	_, maxSlice := minandmax(sums)
-	fmt.Println(maxSlice)
+	return sums
+}
 
+func step1(filename string) int {
+	sums := computeSums(filename)
+	_, maxSlice := minandmax(sums)
+	return maxSlice
+}
+
+func step2(filename string) int {
+	sums := computeSums(filename)
+	sort.Ints(sums)
+	max3 := sums[len(sums)-3:]
+	return max3[0] + max3[1] + max3[2]
+}
+
+func main() {
+	fmt.Println(step1("puzzles/01.txt"))
+	fmt.Println(step2("puzzles/01.txt"))
 }

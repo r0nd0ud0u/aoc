@@ -68,6 +68,6 @@ func step2(filename string) int {
 }
 
 func main() {
-	fmt.Println(step1("puzzles/01.txt"))
-	fmt.Println(step2("puzzles/01.txt"))
+	fmt.Println(step1("01.txt"))
+	fmt.Println(step2("01.txt"))
 }

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"strings"
 )
@@ -8,7 +9,7 @@ import (
 func ReadInputLines(filename string) []string {
 	bytes, err := os.ReadFile(filename)
 	if err != nil {
-		Err("could not read file '%s'", err, filename)
+		fmt.Errorf("could not read file '%s'", err, filename)
 	}
 	allLines := string(bytes)
 	linesRaw := strings.Split(allLines, "\n")

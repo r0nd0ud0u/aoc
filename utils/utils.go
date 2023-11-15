@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+type Applicable interface {
+	int | int64 | float64 | string
+}
+
 func ReadInputLines(filename string) []string {
 	bytes, err := os.ReadFile(filename)
 	if err != nil {
@@ -21,4 +25,13 @@ func ReadInputLines(filename string) []string {
 		}
 	}
 	return lines
+}
+
+func Contains[T Applicable](values []T, value T) bool {
+	for _, v := range values {
+		if v == value {
+			return true
+		}
+	}
+	return false
 }

@@ -1,4 +1,4 @@
-module aoc2022
+module aoc
 
 go 1.20
 

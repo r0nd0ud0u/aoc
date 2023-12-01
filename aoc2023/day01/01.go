@@ -69,7 +69,5 @@ func step2(filename string) int {
 
 func main() {
 	fmt.Println(step1("01_test.txt"))
-	fmt.Println(step1("01.txt"))
-	fmt.Println(step2("01_test.txt"))
 	fmt.Println(step2("01.txt"))
 }

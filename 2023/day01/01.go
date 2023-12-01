@@ -2,72 +2,70 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"sort"
-	"strconv"
 	"strings"
+
+	"gitlab.com/Alfred456654/aoc-utils"
 )
 
-func ReadIntsByBlocks(filename string) [][]int {
-	bytes, err := os.ReadFile(filename)
-	if err != nil {
-		fmt.Errorf("could not read file '%s'", err)
-	}
-	blocks := strings.Split(string(bytes), "\r\n\r\n")
-	result := make([][]int, len(blocks))
-	for i, b := range blocks {
-		lines := strings.Split(b, "\n")
-		result[i] = make([]int, len(lines))
-		for j, l := range lines {
-			val64, err2 := strconv.ParseInt(strings.TrimSpace(l), 10, 64)
-			if err2 != nil {
-				fmt.Errorf("cannot parse int '%s'", err2, l)
-			}
-			result[i][j] = int(val64)
+var AllNbsMap = map[string]int{"one": 1, "two": 2,
+	"three": 3, "four": 4,
+	"five": 5, "six": 6,
+	"seven": 7, "eight": 8,
+	"nine": 9}
+
+func process(filename string, letterCheck bool) int {
+
+	lines := aoc.ReadInputLines(filename)
+	result := 0
+	for _, i := range lines {
+		if len(i) == 0 {
+			continue
 		}
+
+		mapNbs := make(map[int]int, 0)
+		if letterCheck {
+			FillMapByLetterNumbers(i, mapNbs)
+		}
+		for indNb, c := range i {
+			if isDigit(byte(c)) {
+				mapNbs[indNb] = int(c) - 48
+			}
+		}
+
+		keys := make([]int, 0, len(mapNbs))
+		for k := range mapNbs {
+			keys = append(keys, k)
+		}
+		sort.Ints(keys)
+		result += mapNbs[keys[0]]*10 + mapNbs[keys[len(keys)-1]]
 	}
 	return result
 }
 
-func minandmax(values []int) (int, int) {
-	min := values[0] //assign the first element equal to min
-	max := values[0] //assign the first element equal to max
-	for _, number := range values {
-		if number < min {
-			min = number
+func FillMapByLetterNumbers(i string, mapNbs map[int]int) {
+	for key := range AllNbsMap {
+		ind := strings.Index(i, key)
+		ind2 := strings.LastIndex(i, key)
+		if ind != -1 {
+			mapNbs[ind] = AllNbsMap[key]
 		}
-		if number > max {
-			max = number
-		}
-	}
-	return min, max
-}
-
-func computeSums(filename string) []int {
-	result := ReadIntsByBlocks(filename)
-	sums := make([]int, len(result))
-	for i, nain := range result {
-		for _, calories := range nain {
-			sums[i] += calories
+		if ind2 != -1 && ind2 != ind {
+			mapNbs[ind2] = AllNbsMap[key]
 		}
 	}
-	return sums
-}
-
-func step1(filename string) int {
-	sums := computeSums(filename)
-	_, maxSlice := minandmax(sums)
-	return maxSlice
-}
-
-func step2(filename string) int {
-	sums := computeSums(filename)
-	sort.Ints(sums)
-	max3 := sums[len(sums)-3:]
-	return max3[0] + max3[1] + max3[2]
 }
 
 func main() {
-	fmt.Println(step1("01_test.txt"))
-	fmt.Println(step2("01.txt"))
+	aoc.CheckEquals(142, process("01_test1.txt", false))
+	aoc.CheckEquals(281, process("01_test2.txt", true))
+	fmt.Println(process("01.txt", false))
+	fmt.Println(process("01.txt", true))
+}
+
+func isDigit(c byte) bool {
+	if c >= 49 && c <= 57 {
+		return true
+	}
+	return false
 }

@@ -57,3 +57,10 @@ var logger = log.New(os.Stderr, "", 0)
 func Log(message string, args ...interface{}) {
 	logger.Printf(fmt.Sprintf("%s\n", message), args...)
 }
+
+func IsDigit(c byte) bool {
+	if c >= 48 && c <= 57 { // see ascii table
+		return true
+	}
+	return false
+}

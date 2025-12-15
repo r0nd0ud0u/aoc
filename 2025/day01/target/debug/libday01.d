@@ -1,0 +1,1 @@
+D:\marcp\Documents\git\aoc\2025\day01\target\debug\libday01.rlib: D:\marcp\Documents\git\aoc\2025\day01\src\lib.rs D:\marcp\Documents\git\aoc\2025\day01\src\star1.rs D:\marcp\Documents\git\aoc\rust-utils\src\lib.rs D:\marcp\Documents\git\aoc\rust-utils\src\utils.rs
